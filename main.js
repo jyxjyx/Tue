@@ -1,9 +1,10 @@
-import stateMixin from './mixin/stateMixin'
-import initMixin from './mixin/initMixin'
-export default function Tue(options) {
+const stateMixin = require('./mixin/stateMixin');
+const initMixin = require('./mixin/initMixin');
+const lifehookMixin = require('./mixin/lifehookMixin');
+function Tue(options) {
     this._init(options);
-    console.log(this)
-    // this.mounted();
 }
 stateMixin(Tue);
 initMixin(Tue);
+lifehookMixin(Tue);
+module.exports = Tue;

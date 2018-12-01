@@ -1,11 +1,13 @@
-export default function deepclone(obj) {
-    if(typeof obj !== 'object' || obj === null) return obj;
-    let cloneObj = new Object();
-    Object.getOwnPropertyNames(obj).forEach(nameItem => {
-        if(typeof obj[nameItem] === 'object')
-            cloneObj[nameItem] = deepclone(obj[nameItem]);
-        else
-            cloneObj[nameItem] = obj[nameItem];
+// 对对象的深拷贝
+module.exports = function deepclone(data) {
+    if(!data || typeof data !== 'object' || typeof data === 'function') return data;
+    const CP_constructor = data.constructor;
+    let cloneObj = new CP_constructor();
+    Object.getOwnPropertyNames(data).forEach(nameItem => {
+        // if(typeof data[nameItem] === 'object')
+        cloneObj[nameItem] = deepclone(data[nameItem]);
+        // else
+        //     cloneObj[nameItem] = data[nameItem];
     })
     return cloneObj;
 }
