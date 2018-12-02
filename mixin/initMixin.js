@@ -1,5 +1,6 @@
 // 初始化处理
-const render = require('../vdom/render')
+const renderVnode = require('../vdom/renderVnode');
+const renderDOM = require('../vdom/renderDOM');
 module.exports = function initMixin(Tue) {
     Tue.prototype._init = function (options) {
         // 初始化生命周期
@@ -16,7 +17,9 @@ module.exports = function initMixin(Tue) {
 
         // TODO:compile template into render function
         // TODO:模拟返回了一个VNode
-        const vnode = render();
+        const vnodeTree = renderVnode(options.template);
+        // 初次渲染DOM
+        renderDOM(vnodeTree);
         
         // 触发beforeMounted钩子
         this.beforeMounted();

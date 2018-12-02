@@ -104,7 +104,7 @@ eval("const stateMixin = __webpack_require__(/*! ./mixin/stateMixin */ \"./mixin
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("// 初始化处理\r\nconst render = __webpack_require__(/*! ../vdom/render */ \"./vdom/render.js\")\r\nmodule.exports = function initMixin(Tue) {\r\n    Tue.prototype._init = function (options) {\r\n        // 触发beforeCreated钩子\r\n        const beforeCreatedFn = this.options.beforeCreated;\r\n        if(beforeCreatedFn) {\r\n            if(typeof beforeCreatedFn === 'function') {\r\n                this.beforeCreated();\r\n            } else {\r\n                throw(`beforeCreated should be a function`)\r\n            }\r\n        }\r\n        // 初始化生命周期\r\n        this._initLifehook(options);\r\n        \r\n        // 初始化数据\r\n        this._initState(options);\r\n\r\n        // TODO:...待补充部分，如事件处理\r\n\r\n        // 触发created钩子\r\n        this.created();\r\n\r\n        // TODO:compile template into render function\r\n        // TODO:模拟返回了一个VNode\r\n        const vnode = render();\r\n        \r\n        // 触发beforeMounted钩子\r\n        this.beforeMounted();\r\n        \r\n        // TODO:渲染DOM\r\n        \r\n        // 触发mounted钩子\r\n        this.mounted();\r\n        \r\n        // TODO:将data、prop对象变为响应式对象\r\n\r\n        // TODO:响应式对象更新后触发DOM重绘\r\n\r\n    }\r\n}\n\n//# sourceURL=webpack:///./mixin/initMixin.js?");
+eval("// 初始化处理\r\nconst renderVnode = __webpack_require__(/*! ../vdom/renderVnode */ \"./vdom/renderVnode.js\");\r\nconst renderDOM = __webpack_require__(/*! ../vdom/renderDOM */ \"./vdom/renderDOM.js\");\r\nmodule.exports = function initMixin(Tue) {\r\n    Tue.prototype._init = function (options) {\r\n        // 初始化生命周期\r\n        this._initLifehook(options);\r\n        // 触发beforeCreated钩子\r\n        this.beforeCreated();\r\n        // 初始化数据\r\n        this._initState(options);\r\n\r\n        // TODO:...待补充部分，如事件处理\r\n\r\n        // 触发created钩子\r\n        this.created();\r\n\r\n        // TODO:compile template into render function\r\n        // TODO:模拟返回了一个VNode\r\n        const vnodeTree = renderVnode(options.template);\r\n        // 初次渲染DOM\r\n        renderDOM(vnodeTree);\r\n        \r\n        // 触发beforeMounted钩子\r\n        this.beforeMounted();\r\n        \r\n        // TODO:渲染DOM\r\n        \r\n        // 触发mounted钩子\r\n        this.mounted();\r\n        \r\n        // TODO:将data、prop对象变为响应式对象\r\n\r\n        // TODO:响应式对象更新后触发DOM重绘\r\n\r\n    }\r\n}\n\n//# sourceURL=webpack:///./mixin/initMixin.js?");
 
 /***/ }),
 
@@ -163,14 +163,47 @@ eval("// 将对实例tm的key属性的访问改为对tm[sourceKey][key]的访问
 
 /***/ }),
 
-/***/ "./vdom/render.js":
-/*!************************!*\
-  !*** ./vdom/render.js ***!
-  \************************/
+/***/ "./vdom/domAttributes.js":
+/*!*******************************!*\
+  !*** ./vdom/domAttributes.js ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("// 原生dom及对应的属性\r\nmodule.exports = {\r\n    div: ['style', 'class'],\r\n    p: ['style', 'class'],\r\n    ul: ['style', 'class'],\r\n    li: ['style', 'class'],\r\n    span: ['style', 'class'],\r\n    a: ['style', 'class', 'href', 'target'],\r\n    img: ['style', 'class', 'src', 'width', 'height'],\r\n    \r\n}\n\n//# sourceURL=webpack:///./vdom/domAttributes.js?");
+
+/***/ }),
+
+/***/ "./vdom/domFn.js":
+/*!***********************!*\
+  !*** ./vdom/domFn.js ***!
+  \***********************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("// 将template转化为VNode\r\nconst VNode = __webpack_require__(/*! ./vnode */ \"./vdom/vnode.js\")\r\nmodule.exports = function render() {\r\n    return new VNode({\r\n        tag: 'div',\r\n        class: 'class1',\r\n        style: '',\r\n        text: 'this is VNode text',\r\n        events: '',\r\n        parent: '#app',\r\n        child: '',\r\n        href: '',\r\n        src: ''\r\n    });\r\n}\n\n//# sourceURL=webpack:///./vdom/render.js?");
+eval("// 操作dom方法\r\nconst domAttributes = __webpack_require__(/*! ./domAttributes */ \"./vdom/domAttributes.js\");\r\n// 创建DOM\r\nfunction createElement(vnode) {\r\n    var dom = document.createElement(vnode.tag);\r\n    // 渲染domAttributes中对应tag的属性\r\n    domAttributes[vnode.tag].forEach(item => {\r\n        vnode[item] && dom.setAttribute(item, vnode[item]);\r\n    });\r\n    return dom;\r\n    \r\n}\r\n// 插入节点\r\nfunction appendChild(parentDOM, childDOM) {\r\n    parentDOM.appendChild(childDOM);\r\n}\r\n// 插入内容content，isHTML：Boolean表示是否将content作为HTML展示\r\nfunction innerContent(dom, content, isHTML) {\r\n    if(isHTML) {\r\n        dom.innerHTML = content;\r\n    } else {\r\n        dom.innerText = content;\r\n    }\r\n}\r\n// 插入文本节点\r\nfunction insertText(dom, text) {\r\n    const textNode = document.createTextNode(text);\r\n    appendChild(dom, textNode);\r\n}\r\n\r\n\r\nexports.createElement = createElement;\r\nexports.innerContent = innerContent;\r\nexports.insertText = insertText;\r\nexports.appendChild = appendChild;\r\n\n\n//# sourceURL=webpack:///./vdom/domFn.js?");
+
+/***/ }),
+
+/***/ "./vdom/renderDOM.js":
+/*!***************************!*\
+  !*** ./vdom/renderDOM.js ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("// 将VNode tree转化为真实dom\r\n// const VNode = require('./vnode');\r\nconst domFn = __webpack_require__(/*! ./domFn */ \"./vdom/domFn.js\");\r\nmodule.exports = function renderDOM(vnode) {\r\n    if(!vnode) return;\r\n    // 如果是文本节点\r\n    if(vnode.tag === '') {\r\n        // 插入内容\r\n        domFn.insertText(vnode.parent.ele || vnode.parent, vnode.text);\r\n    } else {   //VNode类型\r\n        vnode.ele = domFn.createElement(vnode);\r\n        vnode.child && vnode.child.forEach(child => {\r\n            renderDOM(child);\r\n        })\r\n        \r\n        // 插入子节点\r\n        domFn.appendChild(vnode.parent.ele || vnode.parent, vnode.ele);\r\n    }\r\n\r\n}\n\n//# sourceURL=webpack:///./vdom/renderDOM.js?");
+
+/***/ }),
+
+/***/ "./vdom/renderVnode.js":
+/*!*****************************!*\
+  !*** ./vdom/renderVnode.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("// 将template转化为VNode\r\nconst VNode = __webpack_require__(/*! ./vnode */ \"./vdom/vnode.js\")\r\nmodule.exports = function render(tempalte) {\r\n    const parentNode = new VNode({\r\n        tag: 'div',\r\n        class: 'class1',\r\n        style: '',\r\n        text: 'this is VNode text',\r\n        events: '',\r\n        parent: document.querySelector('#app'),\r\n        child: [],\r\n        href: '',\r\n        src: ''\r\n    });\r\n    const childNode = new VNode({\r\n        tag: 'p',\r\n        class: 'class2',\r\n        style: '',\r\n        text: 'this is child VNode text',\r\n        events: '',\r\n        parent: parentNode,\r\n        child: '',\r\n        href: '',\r\n        src: ''\r\n    })\r\n\r\n    const childNode2 = new VNode({\r\n        tag: 'span',\r\n        class: 'class3',\r\n        style: '',\r\n        text: 'this is child VNode text',\r\n        events: '',\r\n        parent: parentNode,\r\n        child: '',\r\n        href: '',\r\n        src: ''\r\n    })\r\n    const textNode1 = new VNode({\r\n        tag: '',\r\n        text: 'this is text VNode1',\r\n        parent: childNode2\r\n    })\r\n    childNode2.child = [textNode1]\r\n    \r\n    parentNode.child = [childNode, childNode2];\r\n    \r\n    return parentNode;\r\n}\n\n//# sourceURL=webpack:///./vdom/renderVnode.js?");
 
 /***/ }),
 
@@ -181,7 +214,7 @@ eval("// 将template转化为VNode\r\nconst VNode = __webpack_require__(/*! ./vn
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const vnodeAttributes = __webpack_require__(/*! ./vnodeAttributes */ \"./vdom/vnodeAttributes.js\");\r\nclass VNode {\r\n    constructor(nodeOpt) {\r\n        vnodeAttributes.forEach(attr => {\r\n            this[attr] = nodeOpt[attr];\r\n        })\r\n    }\r\n}\r\nmodule.exports = VNode;\n\n//# sourceURL=webpack:///./vdom/vnode.js?");
+eval("const vnodeAttributes = __webpack_require__(/*! ./vnodeAttributes */ \"./vdom/vnodeAttributes.js\");\r\nclass VNode {\r\n    constructor(nodeOpt) {\r\n\r\n        // 设置默认值\r\n        this.ele = null;\r\n        this.isTextHTML = false;\r\n\r\n        vnodeAttributes.forEach(attr => {\r\n            this[attr] = nodeOpt[attr];\r\n        })\r\n    }\r\n}\r\nmodule.exports = VNode;\n\n//# sourceURL=webpack:///./vdom/vnode.js?");
 
 /***/ }),
 
@@ -192,7 +225,7 @@ eval("const vnodeAttributes = __webpack_require__(/*! ./vnodeAttributes */ \"./v
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("module.exports = [\r\n    'tag',\r\n    'class',\r\n    'style',\r\n    'text',\r\n    'events',\r\n    'parent',\r\n    'child',\r\n    'href',\r\n    'src'\r\n]\n\n//# sourceURL=webpack:///./vdom/vnodeAttributes.js?");
+eval("module.exports = [\r\n    'tag',\r\n    'class',\r\n    'style',\r\n    'text',\r\n    'isTextHTML',\r\n    'events',\r\n    'parent',\r\n    'child',\r\n    'href',\r\n    'src',\r\n    'ele',\r\n]\n\n//# sourceURL=webpack:///./vdom/vnodeAttributes.js?");
 
 /***/ })
 
