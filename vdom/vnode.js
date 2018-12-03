@@ -1,5 +1,5 @@
 // VNode类
-const vnodeAttributes = require('./vnodeAttributes');
+import vnodeAttributes from './vnodeAttributes';
 class VNode {
     constructor(nodeOpt) {
         // 设置默认值
@@ -10,6 +10,7 @@ class VNode {
             if(nodeOpt[attr])
                 this[attr] = nodeOpt[attr];
         })
+
     }
 }
-module.exports = VNode;
+export default  VNode;

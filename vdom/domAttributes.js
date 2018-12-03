@@ -1,6 +1,6 @@
 // 原生dom及对应的属性
 // 原生dom具有的属性名
-module.exports = {
+export default {
     div: ['style', 'class'],
     p: ['style', 'class'],
     ul: ['style', 'class'],

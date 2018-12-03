@@ -1,6 +1,6 @@
 // 将template转化为VNode，TODO:模拟产生VNode
-const VNode = require('./vnode')
-module.exports = function render(tempalte) {
+import VNode from './vnode';
+export default function render(tempalte) {
     const parentNode = new VNode({
         tag: 'div',
         class: 'class1',

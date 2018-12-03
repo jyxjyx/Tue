@@ -1,5 +1,5 @@
 // 对对象的深拷贝
-module.exports = function deepclone(data) {
+export default function deepclone(data) {
     if(!data || typeof data !== 'object' || typeof data === 'function') return data;
     const CP_constructor = data.constructor;
     let cloneObj = new CP_constructor();

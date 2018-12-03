@@ -1,5 +1,5 @@
 // 操作dom方法
-const domAttributes = require('./domAttributes');
+import domAttributes from './domAttributes';
 // 创建DOM
 function createElement(vnode) {
     var dom = document.createElement(vnode.tag);
@@ -28,8 +28,5 @@ function insertText(dom, text) {
     appendChild(dom, textNode);
 }
 
+export {createElement, innerContent, insertText, appendChild}
 
-exports.createElement = createElement;
-exports.innerContent = innerContent;
-exports.insertText = insertText;
-exports.appendChild = appendChild;

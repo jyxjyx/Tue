@@ -1,4 +1,4 @@
-module.exports = function typeCheck (variable, expectType) {
+export default function typeCheck (variable, expectType) {
     let variableType = typeof variable;
     if(variable === null) {
         if(variableType === expectType) return true;

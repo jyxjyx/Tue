@@ -1,6 +1,4 @@
-const Tue = require('./main');
-// import typeCheck from './utils/typeCheck'
-// const typeCheck = require('./utils/typeCheck')
+import Tue from './main';
 let Tan = new Tue({
     data: {
         testMsg: 'hello tan'

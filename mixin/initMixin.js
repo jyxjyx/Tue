@@ -1,10 +1,10 @@
 // 初始化处理
-const renderVnode = require('../vdom/renderVnode');
-const renderDOM = require('../vdom/renderDOM');
-module.exports = function initMixin(Tue) {
+import renderVnode from '../vdom/renderVnode';
+import renderDOM from '../vdom/renderDOM';
+export default function initMixin(Tue) {
     Tue.prototype._init = function (options) {
         // 初始化生命周期
-        this._initLifehook(options);
+        this._initLifecycle(options);
         // 触发beforeCreated钩子
         this.beforeCreated();
         // 初始化数据

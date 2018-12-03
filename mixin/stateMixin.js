@@ -1,7 +1,7 @@
 // 初始化state：data、props、methods
-const deepclone = require('../utils/deepclone');
-const proxyData = require('../utils/proxyData');
-module.exports = function stateMixin(Tue) {
+import deepclone from '../utils/deepclone';
+import proxyData from '../utils/proxyData';
+export default function stateMixin(Tue) {
     Tue.prototype._initState = function (options) {
         // 将data挂到实例的_data上
         const data = this._data =  deepclone(options.data);
