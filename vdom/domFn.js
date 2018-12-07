@@ -27,6 +27,9 @@ function insertText(dom, text) {
     const textNode = document.createTextNode(text);
     appendChild(dom, textNode);
 }
-
-export {createElement, innerContent, insertText, appendChild}
+// 绑定原生DOM事件
+function addEventListener(dom, event, callback) {
+    dom.addEventListener(event, callback);
+}
+export {createElement, innerContent, insertText, appendChild, addEventListener}
 

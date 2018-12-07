@@ -1,6 +1,6 @@
 // 将template转化为VNode，TODO:模拟产生VNode
 import VNode from './vnode';
-export default function render(tempalte) {
+export default function render(tempalte, tm) {
     const parentNode = new VNode({
         tag: 'div',
         class: 'class1',
@@ -29,7 +29,11 @@ export default function render(tempalte) {
         class: 'class3',
         style: '',
         text: 'this is child VNode text',
-        events: '',
+        events: {
+            click: function() {
+                console.log('clicked')
+            }
+        },
         parent: parentNode,
         child: '',
         href: '',
@@ -37,7 +41,7 @@ export default function render(tempalte) {
     })
     const textNode1 = new VNode({
         tag: '',
-        text: 'this is text VNode1',
+        text: 'this is text VNode1' + tm.testMsg,
         parent: childNode2
     })
     childNode2.child = [textNode1]

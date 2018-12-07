@@ -1,6 +1,7 @@
 // 初始化处理
 import renderVnode from '../vdom/renderVnode';
 import renderDOM from '../vdom/renderDOM';
+import defineReactive from '../state/defineReactive';
 export default function initMixin(Tue) {
     Tue.prototype._init = function (options) {
         // 初始化生命周期
@@ -16,8 +17,9 @@ export default function initMixin(Tue) {
         this.created();
 
         // TODO:compile template into render function
+
         // TODO:模拟返回了一个VNode
-        const vnodeTree = renderVnode(options.template);
+        const vnodeTree = renderVnode(options.template, this);
         // 初次渲染DOM
         renderDOM(vnodeTree);
         
@@ -30,6 +32,7 @@ export default function initMixin(Tue) {
         this.mounted();
         
         // TODO:将data、prop对象变为响应式对象
+        defineReactive(this, '_data', 'Watcher');
 
         // TODO:响应式对象更新后触发DOM重绘
 
