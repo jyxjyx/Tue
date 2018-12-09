@@ -8,7 +8,7 @@ export default function renderDOM(vnode) {
         insertText(vnode.parent.ele || vnode.parent, vnode.text);
     } else {   //VNode类型
         vnode.ele = createElement(vnode);
-        vnode.child && vnode.child.forEach(child => {
+        vnode.children && vnode.children.forEach(child => {
             renderDOM(child);
         })
         // DOM原生事件绑定

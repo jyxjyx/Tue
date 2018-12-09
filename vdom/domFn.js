@@ -31,5 +31,8 @@ function insertText(dom, text) {
 function addEventListener(dom, event, callback) {
     dom.addEventListener(event, callback);
 }
-export {createElement, innerContent, insertText, appendChild, addEventListener}
+function removeChild(dom, childDom) {
+    dom.removeChild(childDom);
+}
+export {createElement, innerContent, insertText, appendChild, addEventListener, removeChild}
 

@@ -14,6 +14,9 @@ let Tan = new Tue({
     },
     mounted() {
         console.log(this.testMsg)
+        setTimeout( () => {
+            this.testMsg = 'tan changed';
+        }, 5000 )
     }
 })
 console.log(Tan)

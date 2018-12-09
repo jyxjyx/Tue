@@ -7,7 +7,7 @@ export default [
     'isTextHTML',  //是否需要将内容作为html格式显示
     'events',  //时间
     'parent',  //父VNode
-    'child',  //子VNode
+    'children',  //子VNode
     'href',  //
     'src',  //
     'ele',  //存储真实DOM

@@ -6,6 +6,6 @@ export default function proxyData(tm, sourceKey, key) {
         get() {
             return tm[sourceKey][key];
         },
-        set() {}
+        // set() {}
     })
 }
