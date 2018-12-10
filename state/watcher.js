@@ -1,6 +1,4 @@
 // watcher观察者类
-import renderVnode from '../vdom/renderVnode';
-import compareNode from '../vdom/compareNode';
 import VNode from '../vdom/vnode';
 let id = 0;
 class Watcher {
@@ -15,7 +13,9 @@ class Watcher {
         console.log('should be updated')
         if(this.value instanceof VNode) {
             // 更新DOM
-            this.cb(newValue, oldValue);
+            setTimeout(() => {                
+                this.cb(newValue, oldValue);
+            }, 3000)
         } else {
             // 用户自定义watcher
             this.cb(newValue, oldValue)

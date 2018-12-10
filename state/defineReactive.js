@@ -1,4 +1,4 @@
-import Dep from "./dep";
+
 import Watcher from "./watcher";
 import Observe from "./observe";
 
@@ -8,22 +8,19 @@ export default function defineReactive(obj, prop, tm) {
     if(!descriptor.enumerable) {
         return ;
     }
-    const dep = new Dep();
-
     let val = obj[prop];
     if(typeof val === 'object') {
         new Observe(obj[prop], tm);
     }
-    const watchKeys = tm._watch;
+    const watchKeys = Object.getOwnPropertyNames(tm._watch);
     let userWatcher = null;
-    if(watchKeys.find(prop)) {
+    if(watchKeys.find(watchkey => watchkey === prop)) {
         userWatcher = new Watcher(tm, val, tm._watch[prop]);
     }
     Object.defineProperty(obj, prop, {
         enumerable: true,
         configurable: true,
         get() {
-            
             // 如果添加自定义watcher
             if(userWatcher) {
                 obj._watchers.push(userWatcher);

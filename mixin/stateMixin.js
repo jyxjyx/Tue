@@ -20,8 +20,8 @@ export default function stateMixin(Tue) {
         const watchKeys = Object.getOwnPropertyNames(watch);
 
         // 检查watchKeys中是否有不属于data的值
-        watchKeys.forEach(item => {
-            if(!dataKeys.find(item)) {
+        watchKeys.forEach(watchkey => {
+            if(!dataKeys.find(datakey => datakey === watchkey)) {
                 throw(`watch name ${item} should be in data`);
             }
         })

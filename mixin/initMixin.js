@@ -1,7 +1,7 @@
 // 初始化处理
 import renderVnode from '../vdom/renderVnode';
 import renderDOM from '../vdom/renderDOM';
-import defineReactive from '../state/defineReactive';
+
 import Watcher from '../state/watcher';
 import Observe from '../state/observe';
 export default function initMixin(Tue) {
@@ -36,9 +36,9 @@ export default function initMixin(Tue) {
         this.mounted();
         // 生成实例的渲染watcher
         this._watchers = [];
-        this._watcher = new Watcher(this, undefined, () => {
-            this.value = renderVnode(this)
-            renderDOM(this.value);
+        this._watcher = new Watcher(this, vnodeTree, () => {
+            const newNode = renderVnode(this)
+            renderDOM(newNode);
             console.log('this is render update');
         });
 

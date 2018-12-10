@@ -1,3 +1,4 @@
+// Observe类，观测数据变化
 import defineReactive from './defineReactive';
 
 let id = 0;
