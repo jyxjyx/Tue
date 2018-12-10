@@ -1,7 +1,7 @@
-import Watcher from "../watcher";
-import Observe from './index';
+// import Watcher from "../watcher";
+// import Observe from './index';
 
-export default function observe(value, isRootData) {
+// export default function observe(tm, value) {
     // TODO:cb待添加
     // const watch = new Watcher(vm, obj);
 
@@ -11,11 +11,11 @@ export default function observe(value, isRootData) {
     //     value: this,
     //     writable: true
     // });
-    if(obj.__ob__ || typeof value !== 'object') {
-        return
-    }
-    const ob = new Observe(value);
-    return ob;
+//     if(tm.__ob__ || typeof value !== 'object') {
+//         return
+//     }
+//     const ob = new Observe(tm);
+//     return ob;
 
 
-}
+// }

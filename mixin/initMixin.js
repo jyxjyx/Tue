@@ -3,7 +3,7 @@ import renderVnode from '../vdom/renderVnode';
 import renderDOM from '../vdom/renderDOM';
 import defineReactive from '../state/defineReactive';
 import Watcher from '../state/watcher';
-import observe from '../state/observe/observe';
+import Observe from '../state/observe';
 export default function initMixin(Tue) {
     Tue.prototype._init = function (options) {
         // 初始化生命周期
@@ -36,17 +36,14 @@ export default function initMixin(Tue) {
         this.mounted();
         // 生成实例的渲染watcher
         this._watchers = [];
-        // new Watcher(this);
-
-        setTimeout( () => {
-            this._watchers[0].update();
-        }, 5000 )
-
-
+        this._watcher = new Watcher(this, undefined, () => {
+            this.value = renderVnode(this)
+            renderDOM(this.value);
+            console.log('this is render update');
+        });
 
         // TODO:将data、prop对象变为响应式对象
-        observe(this, this._data);
-        defineReactive(this, '_data', 'Watcher');
+        new Observe(this._data, this);
 
         // TODO:响应式对象更新后触发DOM重绘
 
