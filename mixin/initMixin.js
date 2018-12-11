@@ -1,6 +1,7 @@
 // 初始化处理
 import renderVnode from '../vdom/renderVnode';
 import renderDOM from '../vdom/renderDOM';
+import compareNode from '../vdom/compareNode';
 
 import Watcher from '../state/watcher';
 import Observe from '../state/observe';
@@ -37,8 +38,10 @@ export default function initMixin(Tue) {
         // 生成实例的渲染watcher
         this._watchers = [];
         this._watcher = new Watcher(this, vnodeTree, () => {
-            const newNode = renderVnode(this)
-            renderDOM(newNode);
+
+            const newNodeTree = renderVnode(this)
+            compareNode(newNodeTree, vnodeTree);
+            // renderDOM(newNodeTree);
             console.log('this is render update');
         });
 
