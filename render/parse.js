@@ -92,32 +92,28 @@ function parse(html) {
                 const text = _html.slice(0, matchResult.index);
                 // 进行非空验证,去除只有回车和空格的情况
                 const tmp_result = text.match(/\s+/);
+                // 如果只有回车和空格，则将其过滤
                 if(!(tmp_result && tmp_result[0].length === text.length)) {
+                    // 插入文本节点
                     curAstLeave.addChild(text);
                 }
-                // if(!text.match(/\s+/)) {
-                    // 如果不是只有一个换行符，则插入文本节点
-                    // curAstLeave.addChild(text);
-                // }
+                
                 // 直接前进至下一个标签位置
                 _html = advance(_html, matchResult.index);
             }
             // 如果碰到了新的子标签头 
             else if(matchResult && matchResult.index === 0 && !matchResult[0].includes('/')) {
+                // 拿到标签名称
                 const startTag = matchResult[0].slice(1, -1);
                 const tmpAst = curAstLeave;
+
+                // 插入新的标签到ast
                 curAstLeave = new AstLeave();
                 curAstLeave.addTagName(startTag);
-                // tmpAst为非顶层标签时
-                // if(tmpAst.parent) {
-                //     curAstLeave.addParent(tmpAst.parent);
-                //     tmpAst.parent.addChild(curAstLeave);
-                // }
-                // tmpAst为顶层标签时
-                // else {
-                    curAstLeave.addParent(tmpAst);
-                    tmpAst.addChild(curAstLeave);
-                // }
+                curAstLeave.addParent(tmpAst);
+                tmpAst.addChild(curAstLeave);
+
+                // 将新标签入栈
                 tagStack.push({
                     tag: startTag,
                     tagState: tagState.start

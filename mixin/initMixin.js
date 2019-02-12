@@ -4,7 +4,7 @@ import renderDOM from '../vdom/renderDOM';
 import compareNode from '../vdom/compareNode';
 
 import Watcher from '../state/watcher';
-import observe from '../state/observe/observe';
+import Observe from '../state/observe';
 import parse from '../render/parse';
 import render from '../render/render';
 
@@ -25,16 +25,21 @@ export default function initMixin(Tue) {
         // TODO:compile template into render function
 
         // TODO:模拟返回了一个VNode
-        const vnodeTree = renderVnode(this);
-        this._vnodeTree = vnodeTree;
+        // const vnodeTree = renderVnode(this);
+        // this._vnodeTree = vnodeTree;
 
         // 解析template
-        const astTree = parse(this.template);
+        const astTree = parse(this._template);
+        this._astTree = astTree;
         // 渲染为vnode
-        render(astTree, this)
+        const vnodeTree = render(astTree, this);
+        this._vnodeTree = vnodeTree;
+        // 初次插入ele中
+        this._ele = options.ele;
+        vnodeTree.parent = document.querySelector(this._ele);
         // 初次渲染DOM
         renderDOM(vnodeTree);
-        console.log(this)
+        console.log(vnodeTree)
         
         // 触发beforeMounted钩子
         this.beforeMounted();
@@ -47,7 +52,7 @@ export default function initMixin(Tue) {
         this._watchers = [];
         this._watcher = new Watcher(this, vnodeTree, () => {
 
-            const newNodeTree = renderVnode(this)
+            const newNodeTree = render(this._astTree, this);
             compareNode(newNodeTree, vnodeTree);
             // renderDOM(newNodeTree);
             console.log('this is render update');

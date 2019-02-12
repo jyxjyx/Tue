@@ -1,3 +1,6 @@
+import VNode from '../vdom/vnode';
+import AstLeave from './ast';
+// 将ast转为vnode
 function render(ast, tue, parentVNode) {
     // 初始化vnode配置
     const nodeOpt = {
@@ -13,7 +16,23 @@ function render(ast, tue, parentVNode) {
     // 如果为文本节点，则创建一个文本vnode
     if(typeof ast === 'string') {
         nodeOpt.tag = '';
-        nodeOpt.text = ast;
+        const variableReg = /{{ *([\S\s]*?) *}}/;
+        let matchResult = ast.match(variableReg);
+        let text = ast;
+        // 匹配文本差值
+        while(matchResult) {
+            if(matchResult[1]) {
+                if(tue[matchResult[1]] === undefined) {
+                    console.error(`未声明变量${matchResult[1]}`);
+                }
+
+                text = text.replace(variableReg, tue[matchResult[1]]);
+            }
+            matchResult = text.match(variableReg);
+        }
+        // 将结果赋值
+        nodeOpt.text = text;
+        
     }
     // 如果为ast，则进行解析
     else if(ast instanceof AstLeave) {
@@ -58,11 +77,11 @@ function render(ast, tue, parentVNode) {
         ast.children && ast.children.forEach(item => {
             nodeOpt.children.push(render(item, tue, vnode));
         })
+
     }
     
     // 重新配置vnode
     vnode.setVNode(nodeOpt);
-    console.log(nodeOpt)
     
     return vnode; 
 }

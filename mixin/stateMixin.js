@@ -3,6 +3,9 @@ import deepclone from '../utils/deepclone';
 import proxyData from '../utils/proxyData';
 export default function stateMixin(Tue) {
     Tue.prototype._initState = function (options) {
+        // 挂载模板
+        this._template = options.template;
+
         // 将data挂到实例的_data上
         const data = this._data =  deepclone(options.data);
         const dataKeys = Object.getOwnPropertyNames(data);

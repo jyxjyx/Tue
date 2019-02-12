@@ -8,7 +8,6 @@ export default function proxyData(tm, sourceKey, key) {
         },
         set(newV) {
             tm[sourceKey][key] = newV;
-            console.log(tm[sourceKey][key])
             tm.key = newV;
             return newV;
         }
