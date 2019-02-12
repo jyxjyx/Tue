@@ -6,12 +6,25 @@ export default function stateMixin(Tue) {
         // 将data挂到实例的_data上
         const data = this._data =  deepclone(options.data);
         const dataKeys = Object.getOwnPropertyNames(data);
+
         // 将props挂到实例的_props上
         const props = this._props = deepclone(options.props);
         const propKeys = Object.getOwnPropertyNames(props);
+
         // 将methods挂到实例的_methods上
         const methods = this._methods = deepclone(options.methods);
         const methodKeys = Object.getOwnPropertyNames(methods);
+
+        // 将watch挂到实例_watch上
+        const watch = this._watch = deepclone(options.watch);
+        const watchKeys = Object.getOwnPropertyNames(watch);
+
+        // 检查watchKeys中是否有不属于data的值
+        watchKeys.forEach(watchkey => {
+            if(!dataKeys.find(datakey => datakey === watchkey)) {
+                throw(`watch name ${item} should be in data`);
+            }
+        })
         
         // 检查是否有属性重复命名
         dataKeys.forEach( dataName => {

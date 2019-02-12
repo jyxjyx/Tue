@@ -15,6 +15,11 @@ let Tan = new Tue({
     props: {
         testProp: 'I am prop'
     },
+    watch: {
+        testMsg(newV, oldV) {
+            console.log({newV}, {oldV});
+        }
+    },
     methods: {
         testFn() {
             console.log('I am fn')
@@ -25,7 +30,9 @@ let Tan = new Tue({
         console.log(this.testMsg)
         setTimeout( () => {
             this.testMsg = 'tan changed';
-        }, 5000 )
+            console.log(this.testMsg);
+            console.log(this)
+        }, 3000 )
     }
 })
 console.log(Tan)

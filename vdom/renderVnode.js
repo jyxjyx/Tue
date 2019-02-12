@@ -41,7 +41,7 @@ export default function render(tm, tmp) {
     })
     const textNode1 = new VNode({
         tag: '',
-        text: 'this is text VNode1' + tm.testMsg,
+        text: 'this is text testMsg: ' + tm.testMsg,
         parent: childNode2
     })
     childNode2.children = [textNode1]

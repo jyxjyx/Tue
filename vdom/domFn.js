@@ -22,9 +22,20 @@ function innerContent(dom, content, isHTML) {
         dom.innerText = content;
     }
 }
+// 创建文本节点
+function createTextNode(text) {
+    return document.createTextNode(text);
+}
 // 插入文本节点
 function insertText(dom, text) {
-    const textNode = document.createTextNode(text);
+    let textNode;
+    if(typeof text === 'string') {
+        // 如果传入文字
+        textNode = createTextNode(text);
+    } else {
+        // 如果传入的是textNode
+        textNode = text;
+    }
     appendChild(dom, textNode);
 }
 // 绑定原生DOM事件
@@ -34,5 +45,5 @@ function addEventListener(dom, event, callback) {
 function removeChild(dom, childDom) {
     dom.removeChild(childDom);
 }
-export {createElement, innerContent, insertText, appendChild, addEventListener, removeChild}
+export {createElement, innerContent, insertText, appendChild, addEventListener, removeChild, createTextNode}
 

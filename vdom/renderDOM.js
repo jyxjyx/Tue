@@ -1,11 +1,13 @@
 // 将VNode tree转化为真实dom
-import {insertText, createElement, appendChild, addEventListener} from './domFn';
+import {insertText, createElement, appendChild, addEventListener, createTextNode} from './domFn';
 export default function renderDOM(vnode) {
     if(!vnode) return;
     // 如果是文本节点
     if(!vnode.tag) {
+        vnode.ele = createTextNode(vnode.text);
+
         // 插入内容
-        insertText(vnode.parent.ele || vnode.parent, vnode.text);
+        insertText(vnode.parent.ele || vnode.parent, vnode.ele);
     } else {   //VNode类型
         vnode.ele = createElement(vnode);
         vnode.children && vnode.children.forEach(child => {
