@@ -4,6 +4,9 @@ import renderDOM from '../vdom/renderDOM';
 import defineReactive from '../state/defineReactive';
 import Watcher from '../state/watcher';
 import observe from '../state/observe/observe';
+import parse from '../render/parse';
+import render from '../render/render';
+
 export default function initMixin(Tue) {
     Tue.prototype._init = function (options) {
         // 初始化生命周期
@@ -23,6 +26,11 @@ export default function initMixin(Tue) {
         // TODO:模拟返回了一个VNode
         const vnodeTree = renderVnode(this);
         this._vnodeTree = vnodeTree;
+
+        // 解析template
+        const astTree = parse(this.template);
+        // 渲染为vnode
+        render(astTree, this)
         // 初次渲染DOM
         renderDOM(vnodeTree);
         console.log(this)

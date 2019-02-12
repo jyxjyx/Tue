@@ -2,7 +2,10 @@
 import vnodeAttributes from './vnodeAttributes';
 import domAttributes from './domAttributes'
 class VNode {
-    constructor(nodeOpt) {
+    constructor(nodeOpt) {       
+        this.setVNode(nodeOpt)
+    }
+    setVNode(nodeOpt) {
         // 设置默认值
         this.ele = null;
         this.isTextHTML = false;
@@ -12,8 +15,10 @@ class VNode {
             domAttributes[nodeOpt.tag].forEach(item => {
                 this[item] = null;
             })
-        } else { //文本节点
+        } else { 
+            //文本节点
             this.tag = '';
+            this.text = nodeOpt.text
         }
         // 初始化事件类型
         this.events = {};
@@ -22,7 +27,6 @@ class VNode {
             if(nodeOpt[attr])
                 this[attr] = nodeOpt[attr];
         })
-
     }
 }
 export default  VNode;
